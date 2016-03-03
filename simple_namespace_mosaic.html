@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>mijin simple wallet</title>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/x64-core.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/sha3.js"></script>
+<script src="namespace_mosaic.js"></script>
+<script src="nacl-fast.js"></script>
+<script src="KeyPair.js"></script>
+<script>
+
+//Prepare_001
+var SENDER_PRIVATE_KEY = '';	//送信元の秘密鍵
+var SENDER_PUBLIC_KEY = ''; 	//送信先公開鍵
+
+//送金API URL
+var URL_TRANSACTION_ANNOUNCE = "http://xx.xxx.xxx.xx:7895/transaction/announce";
+
+
+var is_top_level_namespece_creating = true;
+var PARENT_NAMESPACE = null;
+var NEW_NAMESPACE = "test3";
+var NEW_MOSAIC = "mosa";
+var MOSAIC_DEF_IN = "test3";  // モザイクを定義する場所（Namespace）
+
+
+//var is_top_level_namespece_creating = false;
+//var PARENT_NAMESPACE = "test3";
+//var NEW_NAMESPACE = "sub2";
+//var NEW_MOSAIC = "submosa";
+//var MOSAIC_DEF_IN = "test3.sub";  // モザイクを定義する場所（Namespace）
+
+//モザイク定義
+var MOSAIC_PROPERTIES = [
+	{name:"initialSupply",value:"10000"},
+	{name:"divisibility",value:"0"},
+	{name:"transferable",value:"true"},
+	{name:"supplyMutable",value:"true"}
+];
+
+
+$(function(){
+
+	function sendRequest(){
+
+
+		var result = confirm("Namespaceを規定します。よろしいですか？");
+		if(result){
+			provisionNamespaceRequest().done(
+			function(data){
+				console.log(data);
+			});
+		}
+
+		var result = confirm("Mosaicを定義します。よろしいですか？");
+		if(result){
+			mosaicDefinitionRequest().done(
+			function(data){
+				console.log(data);
+			});
+		}
+
+	}
+	$("#btnReset").click(function(){sendRequest();return false;});
+});
+	
+</script>
+</head>
+<body>
+
+<h1>NAMESPACE・MOSAIC作成サンプル</h1>
+<button id="btnReset">作成</button>
+
+</body>
+</html>
